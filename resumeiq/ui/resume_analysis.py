@@ -140,7 +140,6 @@ def render_resume_analysis_page():
                     "✅ Resume scoring is complete, but AI analysis is unavailable. "
                     "Check your API keys and model settings, then retry the analysis."
                 )
-            st.rerun()
 
         except ValueError as ve:
             st.error(f"❌ {ve}")

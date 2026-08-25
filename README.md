@@ -18,7 +18,7 @@
 ![Tests](https://img.shields.io/badge/Tests-73%2F73-00C853?style=for-the-badge&logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-00bfff?style=for-the-badge)
 
-**🔗 Live Demo:** _Deploy with Streamlit Community Cloud using `app.py` as the entrypoint._
+**🔗 Live Demo:** [resumeiq369.streamlit.app](https://resumeiq369.streamlit.app/)
 
 </div>
 

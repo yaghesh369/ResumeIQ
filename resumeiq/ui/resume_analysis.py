@@ -16,33 +16,29 @@ def render_resume_analysis_page():
     )
     st.markdown("---")
 
+    st.markdown("#### 📑 Resume")
+    uploaded_resume = st.file_uploader(
+        f"Supported: {', '.join(SUPPORTED_EXTENSIONS)}",
+        type=SUPPORTED_EXTENSIONS,
+        key="resume_uploader",
+        help="Images are read with Gemini vision OCR. Scanned PDFs should be uploaded as images.",
+    )
+
+    st.markdown("#### 💼 Job Description")
+    jd_text = st.text_area(
+        "Paste the job description here",
+        height=180,
+        key="jd_paste",
+        placeholder="Paste the full job description, or upload a file below...",
+    )
+    uploaded_jd = st.file_uploader(
+        "Upload JD file (PDF, TXT, or DOCX)",
+        type=["pdf", "txt", "docx"],
+        key="jd_uploader",
+        help="On mobile, choose a file and wait for the upload confirmation before analyzing.",
+    )
+
     with st.form("resume_analysis_form", clear_on_submit=False):
-        st.markdown("#### 📑 Resume")
-        uploaded_resume = st.file_uploader(
-            f"Supported: {', '.join(SUPPORTED_EXTENSIONS)}",
-            type=SUPPORTED_EXTENSIONS,
-            key="resume_uploader",
-            help="Images are read with Gemini vision OCR. Scanned PDFs should be uploaded as images.",
-        )
-
-        st.markdown("#### 💼 Job Description")
-        jd_tab_paste, jd_tab_file = st.tabs(["Paste text", "Upload file"])
-
-        jd_text = ""
-        with jd_tab_paste:
-            jd_text = st.text_area(
-                "Paste the job description here",
-                height=180,
-                key="jd_paste",
-                placeholder="Paste the full job description...",
-            )
-        with jd_tab_file:
-            uploaded_jd = st.file_uploader(
-                "Choose a JD file (txt/pdf/docx)",
-                type=["pdf", "txt", "docx"],
-                key="jd_uploader",
-            )
-
         submitted = st.form_submit_button("🚀 Analyze Resume", use_container_width=True)
 
     if submitted:

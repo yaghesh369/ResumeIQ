@@ -1,10 +1,9 @@
 <div align="center">
 
-```
-╦═╗┌─┐┌─┐┌─┐┌─┐┬ ┬   ╦╗
-╠╦╝│  │  ├─┤└─┐└┬┘───╠╩╗
-╩╚═└─┘└─┘┴ ┴└─┘ ┴    ══╝
-```
+> **Resume intelligence for better applications.**
+>
+> Analyze your resume, compare it with a job description, and get clear,
+> actionable feedback before you apply.
 
 # 📄 ResumeIQ
 
@@ -19,6 +18,10 @@
 ![License](https://img.shields.io/badge/License-MIT-00bfff?style=for-the-badge)
 
 **🔗 Live Demo:** [resumeiq369.streamlit.app](https://resumeiq369.streamlit.app/)
+
+**🎥 Product Demo**
+
+[![Watch the ResumeIQ product demo](https://img.youtube.com/vi/VqMPI6DDDIk/hqdefault.jpg)](https://youtu.be/VqMPI6DDDIk)
 
 </div>
 

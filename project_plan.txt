@@ -1,0 +1,1581 @@
+Absolutely. Let's make **ResumeIQ** specifically for the MirAI evaluation rather than just making a generic resume analyzer.
+
+# 🏆 ResumeIQ
+
+### AI-Powered Resume Intelligence & Job Matching Platform
+
+**Tagline:**
+
+> *Know how well your resume fits the job before the recruiter does.*
+
+The goal should be to build a **professional Streamlit AI product** that deliberately covers **every item in the 100-point evaluation matrix**.
+
+---
+
+# 1. Final Product Vision
+
+ResumeIQ takes:
+
+```text
+📄 Candidate Resume
+        +
+💼 Target Job Description
+        ↓
+   Resume Parser
+        ↓
+   Analysis Engine
+        ↓
+    Gemini AI
+        ↓
+ ┌──────┼────────┬─────────┐
+ ↓      ↓        ↓         ↓
+ATS   Skills   Critic   Experience
+Score  Gap      AI       Analysis
+ └──────┼────────┴─────────┘
+        ↓
+ Interactive Dashboard
+        ↓
+Recommendations + Improvements
+        ↓
+Interview Preparation
+```
+
+The user should be able to go from:
+
+> "Here is my resume."
+
+to:
+
+> "Here is exactly how well I match this job, what's missing, what is weak, and what I should improve."
+
+---
+
+# 2. Features — Final Scope
+
+I recommend **10 features**, but divide them into core and bonus features.
+
+## Core features
+
+### 1. Resume Upload & Parser
+
+* PDF upload
+* TXT upload
+* Extract text
+* Detect sections
+* Extract skills
+* Extract education
+* Extract experience
+* Extract projects
+* Extract certifications
+
+### 2. Job Description Analyzer
+
+* Paste JD
+* Upload JD
+* Extract required skills
+* Identify preferred skills
+* Identify experience requirements
+* Identify responsibilities
+
+### 3. ATS Compatibility Analyzer
+
+Generate:
+
+```text
+ATS Compatibility
+        82/100
+```
+
+Breakdown:
+
+```text
+Keyword Match       86%
+Technical Skills    90%
+Experience          75%
+Projects            88%
+Education           95%
+Structure           78%
+```
+
+### 4. Job Match Score
+
+```text
+JOB MATCH
+   84%
+```
+
+Explain why.
+
+### 5. Skill Gap Analyzer
+
+```text
+MATCHED
+✓ Python
+✓ Django
+✓ PostgreSQL
+
+PARTIAL
+◐ REST APIs
+
+MISSING
+✗ Docker
+✗ AWS
+✗ FastAPI
+```
+
+### 6. AI Resume Critic
+
+Give specific criticism:
+
+```text
+🔥 Resume Critique
+
+Experience Section
+━━━━━━━━━━━━━━━━━
+
+❌ Weak:
+"Worked on a Django project."
+
+Problem:
+No measurable result or technical depth.
+
+✓ Suggested:
+"Developed REST APIs using Django REST Framework
+with JWT authentication and PostgreSQL..."
+```
+
+### 7. AI Resume Improver
+
+Generate improved:
+
+* summary
+* experience bullets
+* project descriptions
+* skills section
+
+### 8. Job-Specific Recommendations
+
+Example:
+
+> Your resume matches 84% of this role.
+
+Then:
+
+```text
+Priority 1
+Add Docker experience if applicable.
+
+Priority 2
+Mention REST API development more prominently.
+
+Priority 3
+Quantify your project achievements.
+```
+
+### 9. Interview Preparation
+
+Generate:
+
+* technical questions
+* project questions
+* HR questions
+* job-specific questions
+
+### 10. Resume Version Comparison
+
+Upload:
+
+```text
+Resume V1
+Resume V2
+```
+
+Result:
+
+```text
+ATS Score
+
+V1       71
+V2       84
+
+Improvement
++13 ↑
+```
+
+This is an excellent use of `st.metric(delta=...)`.
+
+---
+
+# 3. Optional Advanced Feature — Voice Interview
+
+Only build this **after everything else works**.
+
+Use microphone input for:
+
+> "Tell me about your most challenging project."
+
+Then evaluate the response.
+
+```text
+Communication      8/10
+Technical Depth    7/10
+Clarity            9/10
+Relevance          8/10
+
+Overall            8.0/10
+```
+
+This is useful because the rubric specifically mentions **Audio/Mic Recorder**.
+
+However, don't let this jeopardize the core project.
+
+---
+
+# 4. Technology Stack
+
+Keep it completely free/simple.
+
+| Component       | Technology                |
+| --------------- | ------------------------- |
+| Language        | Python                    |
+| UI              | Streamlit                 |
+| AI              | Gemini API                |
+| Data            | Pandas                    |
+| PDF extraction  | PyMuPDF                   |
+| Charts          | Plotly                    |
+| State           | `st.session_state`        |
+| Version control | Git/GitHub                |
+| Deployment      | Streamlit Community Cloud |
+| Architecture    | Mermaid                   |
+| Secrets         | Streamlit Secrets         |
+
+### No need for:
+
+❌ React
+❌ Django
+❌ FastAPI
+❌ PostgreSQL
+❌ Redis
+❌ Celery
+
+For this assignment, these would mostly add unnecessary complexity.
+
+---
+
+# 5. Project Architecture
+
+Use a modular architecture rather than one giant `app.py`.
+
+```text
+resumeiq/
+│
+├── app.py
+│
+├── ai/
+│   ├── __init__.py
+│   ├── gemini_client.py
+│   ├── prompts.py
+│   └── analyzer.py
+│
+├── parser/
+│   ├── __init__.py
+│   ├── resume_parser.py
+│   ├── jd_parser.py
+│   └── section_extractor.py
+│
+├── analysis/
+│   ├── __init__.py
+│   ├── ats_scorer.py
+│   ├── skill_matcher.py
+│   ├── experience_analyzer.py
+│   └── scoring.py
+│
+├── ui/
+│   ├── __init__.py
+│   ├── dashboard.py
+│   ├── resume_analysis.py
+│   ├── skill_gap.py
+│   ├── critic.py
+│   ├── improvements.py
+│   └── interview.py
+│
+├── utils/
+│   ├── __init__.py
+│   ├── text_cleaner.py
+│   └── validators.py
+│
+├── assets/
+│   └── architecture.png
+│
+├── sample_data/
+│   ├── sample_resume.pdf
+│   └── sample_job.txt
+│
+├── tests/
+│   ├── test_parser.py
+│   ├── test_scoring.py
+│   └── test_utils.py
+│
+├── .gitignore
+├── requirements.txt
+├── README.md
+└── LICENSE
+```
+
+This immediately helps with the **Technical Implementation & Architecture** category.
+
+---
+
+# 6. Data Flow
+
+Your technical design should explain this:
+
+```text
+User
+ │
+ ├── Resume PDF
+ │
+ └── Job Description
+        │
+        ↓
+ ┌─────────────────────┐
+ │ File Validation     │
+ └──────────┬──────────┘
+            ↓
+ ┌─────────────────────┐
+ │ Text Extraction     │
+ │ PyMuPDF             │
+ └──────────┬──────────┘
+            ↓
+ ┌─────────────────────┐
+ │ Text Cleaning       │
+ └──────────┬──────────┘
+            ↓
+ ┌─────────────────────┐
+ │ Python Analysis     │
+ │ Pandas + Matching   │
+ └──────────┬──────────┘
+            ↓
+ ┌─────────────────────┐
+ │ Gemini AI Engine    │
+ └──────────┬──────────┘
+            ↓
+ ┌─────────────────────┐
+ │ Structured Results  │
+ └──────────┬──────────┘
+            ↓
+ ┌─────────────────────┐
+ │ Streamlit Dashboard │
+ └─────────────────────┘
+```
+
+---
+
+# 7. Session State — Important for 25 Points
+
+The evaluator specifically wants:
+
+> Proper use of `st.session_state` to prevent memory loss.
+
+Use state for:
+
+```python
+st.session_state.resume_text
+st.session_state.jd_text
+st.session_state.resume_data
+st.session_state.jd_data
+st.session_state.analysis
+st.session_state.ats_score
+st.session_state.skill_gap
+st.session_state.recommendations
+st.session_state.improvements
+```
+
+Initialize them when the application starts.
+
+This means Streamlit reruns won't destroy your analysis.
+
+---
+
+# 8. Forms — Important for 25 Points
+
+Don't call Gemini whenever a user changes a field.
+
+Use:
+
+```text
+┌─────────────────────────────────────┐
+│ Resume Analysis                     │
+│                                     │
+│ Resume: [ Upload PDF ]              │
+│                                     │
+│ Job Description:                    │
+│ [................................]  │
+│ [................................]  │
+│                                     │
+│       🚀 ANALYZE RESUME             │
+└─────────────────────────────────────┘
+```
+
+Use:
+
+```python
+with st.form("resume_analysis_form"):
+    ...
+    submitted = st.form_submit_button("Analyze Resume")
+```
+
+Gemini is called **only when submitted**.
+
+This demonstrates both:
+
+* `st.form`
+* API-call optimization
+
+---
+
+# 9. Resume Parsing Pipeline
+
+Don't blindly send everything to Gemini.
+
+First:
+
+```text
+PDF
+ ↓
+PyMuPDF
+ ↓
+Raw text
+ ↓
+Clean text
+ ↓
+Section detection
+```
+
+Identify:
+
+```text
+SUMMARY
+SKILLS
+EDUCATION
+EXPERIENCE
+PROJECTS
+CERTIFICATIONS
+```
+
+Then create structured data.
+
+Example:
+
+```python
+{
+    "skills": [...],
+    "experience": [...],
+    "projects": [...],
+    "education": [...],
+    "certifications": [...]
+}
+```
+
+This demonstrates an actual **data pipeline**.
+
+---
+
+# 10. ATS Scoring Engine
+
+Don't let Gemini randomly decide the entire score.
+
+Build a basic deterministic scoring engine.
+
+For example:
+
+```text
+Keyword Match       25%
+Technical Skills    25%
+Experience          20%
+Projects            15%
+Education           10%
+Structure            5%
+```
+
+Then:
+
+```text
+ATS Score =
+keyword_score * 0.25
++ skill_score * 0.25
++ experience_score * 0.20
++ project_score * 0.15
++ education_score * 0.10
++ structure_score * 0.05
+```
+
+This is much more defensible technically.
+
+Gemini provides **semantic interpretation**, while Python handles deterministic calculations.
+
+That's a strong architectural decision to explain to the judges.
+
+---
+
+# 11. Gemini AI Engine
+
+Create a dedicated client:
+
+```text
+ai/gemini_client.py
+```
+
+and prompts:
+
+```text
+ai/prompts.py
+```
+
+Don't scatter Gemini API calls throughout the application.
+
+---
+
+# 12. Prompt Engineering
+
+You should have different prompts for different tasks.
+
+## Prompt A — Resume Extraction
+
+```text
+SYSTEM:
+You are a professional resume information extraction engine.
+
+Extract structured information from the provided resume.
+
+Identify:
+- technical skills
+- soft skills
+- education
+- work experience
+- projects
+- certifications
+
+Do not invent information.
+Only extract information supported by the resume.
+Return structured JSON.
+```
+
+---
+
+# 13. Prompt B — Job Description Analysis
+
+```text
+SYSTEM:
+You are a job description analysis engine.
+
+Analyze the provided job description and identify:
+
+1. Required technical skills
+2. Preferred technical skills
+3. Soft skills
+4. Experience requirements
+5. Responsibilities
+6. Important keywords
+
+Separate mandatory and preferred requirements.
+
+Do not invent requirements.
+Return structured JSON.
+```
+
+---
+
+# 14. Prompt C — Resume Critic
+
+```text
+SYSTEM:
+You are a senior technical recruiter and resume reviewer.
+
+Analyze the candidate's resume specifically against
+the target job description.
+
+Do NOT provide generic career advice.
+
+Identify:
+- weak bullet points
+- missing keywords
+- missing technical skills
+- vague claims
+- lack of measurable achievements
+- irrelevant information
+- project weaknesses
+- formatting concerns
+
+For every criticism provide:
+1. Problem
+2. Why it matters
+3. Specific improvement
+
+Be direct but constructive.
+Do not invent candidate achievements.
+```
+
+---
+
+# 15. Prompt D — Resume Improvement
+
+This is critical:
+
+```text
+SYSTEM:
+You are a professional technical resume editor.
+
+Improve the candidate's resume for the target job.
+
+IMPORTANT:
+Never invent:
+- employment
+- projects
+- technologies
+- metrics
+- certifications
+- achievements
+
+Only improve wording and presentation
+using information actually provided.
+
+Use concise ATS-friendly language.
+Prioritize measurable impact when metrics
+already exist.
+```
+
+That "don't invent information" rule is important for reliability.
+
+---
+
+# 16. Structured AI Response
+
+Ask Gemini for structured JSON such as:
+
+```json
+{
+  "summary": "...",
+  "job_match_score": 84,
+  "matched_skills": [],
+  "partial_skills": [],
+  "missing_skills": [],
+  "weak_sections": [],
+  "recommendations": [],
+  "critic_points": []
+}
+```
+
+Then validate the response in Python.
+
+This makes your AI integration much more professional.
+
+---
+
+# 17. Dynamic Prompting
+
+Use actual user context:
+
+```python
+prompt = f"""
+Analyze the following resume against this job description.
+
+RESUME:
+{resume_text}
+
+JOB DESCRIPTION:
+{job_description}
+
+Return a structured analysis...
+"""
+```
+
+This directly satisfies the rubric's requirement for:
+
+> f-strings for dynamic context.
+
+---
+
+# 18. UI Design
+
+Your application should feel like a SaaS dashboard.
+
+## Sidebar
+
+```text
+━━━━━━━━━━━━━━━━━━━━━━
+      RESUMEIQ
+━━━━━━━━━━━━━━━━━━━━━━
+
+🏠 Home
+
+📄 Resume Analysis
+
+📊 Dashboard
+
+🎯 Skill Gap
+
+🔥 AI Critic
+
+✨ Improvements
+
+🎤 Interview Prep
+
+🔄 Compare Versions
+
+━━━━━━━━━━━━━━━━━━━━━━
+Gemini AI
+━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+# 19. Home Page
+
+Make it visually strong.
+
+```text
+        RESUMEIQ
+
+ AI-Powered Resume Intelligence
+
+ Know your resume's compatibility
+ before you apply.
+
+ [ Upload Resume ]
+
+ [ Analyze Job ]
+
+─────────────────────────────────
+
+      ATS       SKILLS      JOB
+      82        84%        79%
+```
+
+---
+
+# 20. Dashboard — 20 Points
+
+This is where you deliberately satisfy the UI rubric.
+
+Use:
+
+### `st.columns()`
+
+```text
+┌──────────┬──────────┬──────────┬──────────┐
+│ ATS      │ Job      │ Skills   │ Missing  │
+│ 82/100   │ 84%      │ 88%      │ 3        │
+│ +7 ↑     │ +12 ↑    │ +5 ↑     │ -2 ↓     │
+└──────────┴──────────┴──────────┴──────────┘
+```
+
+Use:
+
+```python
+st.metric("ATS Score", 82, "+7")
+```
+
+---
+
+# 21. Interactive Charts
+
+Include:
+
+### Skill Match Chart
+
+```text
+Python       ██████████
+Django       █████████
+React        ████████
+PostgreSQL   ████████
+Docker       ██
+AWS          █
+```
+
+### Score Breakdown
+
+Use Plotly:
+
+```text
+ATS
+Skills
+Experience
+Projects
+Education
+Structure
+```
+
+### Skill Gap Table
+
+Use:
+
+```python
+st.data_editor()
+```
+
+Example:
+
+| Skill  | Requirement | Match | Priority |
+| ------ | ----------- | ----- | -------- |
+| Python | Required    | ✅     | High     |
+| Django | Required    | ✅     | High     |
+| Docker | Preferred   | ❌     | Medium   |
+| AWS    | Preferred   | ❌     | Medium   |
+
+This directly targets the rubric.
+
+---
+
+# 22. Expanders
+
+Use them for detailed information:
+
+```text
+▼ 🔥 Resume Critique
+
+▼ 📌 Missing Skills
+
+▼ ✨ Recommended Improvements
+
+▼ 📚 Interview Questions
+
+▼ 🧠 AI Reasoning
+```
+
+That's another explicit rubric requirement.
+
+---
+
+# 23. AI Critic Page
+
+Make this visually distinctive.
+
+Example:
+
+```text
+🔥 RUTHLESS RESUME REVIEW
+
+Overall:
+Your resume is technically strong,
+but it doesn't communicate impact.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ Weak Bullet
+
+"Created a website using Django."
+
+Why:
+Too generic.
+
+Better:
+"Developed REST APIs using Django REST Framework
+with PostgreSQL and JWT authentication."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠ Missing Evidence
+
+Your project descriptions contain technologies
+but lack measurable outcomes.
+```
+
+---
+
+# 24. Improvement Page
+
+Use tabs:
+
+```text
+[ Summary ] [ Experience ] [ Projects ] [ Skills ]
+```
+
+Each displays:
+
+```text
+BEFORE
+────────────
+...
+
+AFTER
+────────────
+...
+
+Why this is better
+────────────
+...
+```
+
+Add:
+
+```text
+📋 Copy
+```
+
+where Streamlit supports appropriate interaction.
+
+---
+
+# 25. Interview Preparation
+
+After resume + JD analysis:
+
+```text
+Generate Interview Questions
+```
+
+Return:
+
+### Technical
+
+5 questions
+
+### Project
+
+5 questions
+
+### HR
+
+3 questions
+
+### Role-specific
+
+5 questions
+
+This adds substantial practical value.
+
+---
+
+# 26. Resume Version Comparison
+
+This is one of the strongest bonus features.
+
+```text
+              V1       V2
+ATS           71       84
+Job Match     68%      82%
+Skills        74%      89%
+```
+
+Then:
+
+```text
+Improvement: +13 ATS points
+```
+
+Use:
+
+```python
+st.metric(
+    "ATS Score",
+    new_score,
+    delta=new_score-old_score
+)
+```
+
+This directly demonstrates the rubric's dynamic KPI requirement.
+
+---
+
+# 27. Audio Feature — Optional
+
+If time permits:
+
+```text
+🎤 AI Interview Practice
+```
+
+Flow:
+
+```text
+AI Question
+     ↓
+Microphone
+     ↓
+User Answer
+     ↓
+Gemini
+     ↓
+Evaluation
+```
+
+But don't sacrifice your core project for it.
+
+---
+
+# 28. Error Handling
+
+This is extremely important for **zero terminal errors**.
+
+Handle:
+
+### Invalid file
+
+```text
+❌ Unsupported file format.
+Please upload PDF or TXT.
+```
+
+### Empty PDF
+
+```text
+❌ Could not extract text from this document.
+Please upload a text-based PDF.
+```
+
+### Gemini failure
+
+```text
+⚠️ AI service temporarily unavailable.
+Please try again.
+```
+
+### API quota
+
+```text
+⚠️ AI request limit reached.
+Please try again later.
+```
+
+### Invalid JSON
+
+Implement fallback parsing/validation.
+
+---
+
+# 29. API Optimization
+
+The evaluator specifically wants efficient API use.
+
+Don't call Gemini:
+
+```text
+every rerun
+every button
+every page change
+```
+
+Instead:
+
+```text
+Upload
+ ↓
+Analyze button
+ ↓
+Gemini call
+ ↓
+Save result to session_state
+ ↓
+Reuse result
+```
+
+You can also cache expensive deterministic operations such as PDF parsing where appropriate.
+
+---
+
+# 30. Security
+
+Never put:
+
+```text
+GEMINI_API_KEY=...
+```
+
+in GitHub.
+
+Local:
+
+```text
+.env
+```
+
+Production:
+
+```text
+Streamlit Secrets
+```
+
+`.gitignore`:
+
+```text
+.env
+.streamlit/secrets.toml
+__pycache__/
+*.pyc
+```
+
+---
+
+# 31. Testing
+
+Create:
+
+```text
+tests/
+├── test_parser.py
+├── test_scoring.py
+└── test_utils.py
+```
+
+Test:
+
+### PDF extraction
+
+```text
+PDF → expected text
+```
+
+### Skill matching
+
+```text
+Resume skills + JD skills → correct match
+```
+
+### Score calculation
+
+Test known values.
+
+### Invalid input
+
+Test empty documents.
+
+This gives you evidence for technical quality.
+
+---
+
+# 32. Deployment
+
+Deploy on:
+
+### Streamlit Community Cloud
+
+GitHub:
+
+```text
+main
+  ↓
+Streamlit Cloud
+  ↓
+Live ResumeIQ
+```
+
+Set:
+
+```text
+GEMINI_API_KEY
+```
+
+through Streamlit Secrets.
+
+Test the deployed app from a fresh browser.
+
+---
+
+# 33. Requirements.txt
+
+Keep it clean:
+
+```text
+streamlit
+google-genai
+pandas
+numpy
+plotly
+pymupdf
+python-dotenv
+```
+
+Only add packages that your actual code uses.
+
+---
+
+# 34. GitHub Strategy
+
+Repository:
+
+```text
+resumeiq-ai
+```
+
+Make commits meaningful:
+
+```text
+Initial Streamlit setup
+Add resume PDF parser
+Add job description parser
+Add ATS scoring engine
+Integrate Gemini AI
+Add skill gap dashboard
+Add AI resume critic
+Add resume improvement module
+Add interview preparation
+Add version comparison
+Add tests
+Add deployment configuration
+Update README and architecture
+```
+
+This is better than one giant:
+
+```text
+final project
+```
+
+commit.
+
+---
+
+# 35. README Requirements
+
+Your README should have:
+
+```text
+# ResumeIQ
+
+AI-Powered Resume Intelligence & Job Matching Platform
+
+## Demo
+
+[Live Demo]
+
+## Problem
+
+...
+
+## Solution
+
+...
+
+## Features
+
+...
+
+## Architecture
+
+[Mermaid]
+
+## Data Flow
+
+...
+
+## Tech Stack
+
+...
+
+## Gemini Integration
+
+...
+
+## Prompt Engineering
+
+...
+
+## Project Structure
+
+...
+
+## Installation
+
+...
+
+## Environment Variables
+
+...
+
+## Testing
+
+...
+
+## Deployment
+
+...
+
+## Screenshots
+
+...
+
+## Limitations
+
+...
+
+## Future Improvements
+
+...
+
+## Author
+...
+```
+
+The **live deployment link must be near the top**.
+
+---
+
+# 36. Mermaid Architecture
+
+Put this in README:
+
+```mermaid
+flowchart TD
+    A[User] --> B[Streamlit UI]
+
+    B --> C[Resume Upload]
+    B --> D[Job Description]
+
+    C --> E[PyMuPDF Parser]
+    D --> F[JD Parser]
+
+    E --> G[Text Processing]
+    F --> G
+
+    G --> H[Pandas Analysis]
+
+    H --> I[Gemini AI Engine]
+
+    I --> J[ATS Analysis]
+    I --> K[Skill Gap]
+    I --> L[AI Critic]
+    I --> M[Recommendations]
+
+    J --> N[Dashboard]
+    K --> N
+    L --> N
+    M --> N
+
+    N --> O[Interview Preparation]
+    N --> P[Resume Improvement]
+```
+
+This directly addresses **System Design & Documentation — 10 points**.
+
+---
+
+# 37. Mapping Your Project to All 100 Points
+
+This is the most important part.
+
+## 🟦 1. Technical Implementation — 25/25 target
+
+You will demonstrate:
+
+| Requirement         | Implementation               |
+| ------------------- | ---------------------------- |
+| Python              | Entire application           |
+| Clean architecture  | Modular folders              |
+| `st.session_state`  | Store analysis               |
+| `st.form`           | Analyze button               |
+| Pandas              | Data processing              |
+| Data pipeline       | PDF → parser → analysis → AI |
+| Error handling      | File/API errors              |
+| Testing             | Unit tests                   |
+| Zero runtime errors | Full testing                 |
+
+---
+
+## 🟪 2. AI Integration — 20/20 target
+
+| Requirement        | Implementation               |
+| ------------------ | ---------------------------- |
+| Gemini API         | Core AI engine               |
+| System prompts     | Separate role prompts        |
+| f-string context   | Resume + JD                  |
+| Dynamic AI         | Job-specific analysis        |
+| Structured output  | JSON                         |
+| Prompt engineering | Multiple specialized prompts |
+| Multimodal         | Optional voice feature       |
+
+---
+
+## 🟩 3. UI/UX & Visualization — 20/20 target
+
+| Requirement            | Implementation          |
+| ---------------------- | ----------------------- |
+| Columns                | KPI cards               |
+| Expanders              | Detailed analysis       |
+| `st.metric`            | Scores + deltas         |
+| Data editor            | Skill gap               |
+| Charts                 | ATS/skill visualization |
+| Tabs                   | Resume sections         |
+| Progress               | Score indicators        |
+| Professional dashboard | SaaS-style UI           |
+
+---
+
+## 🟨 4. Deployment — 15/15 target
+
+* Streamlit Community Cloud
+* requirements.txt
+* Secrets
+* GitHub integration
+* Live URL
+* Tested production build
+
+---
+
+## 🟧 5. GitHub — 10/10 target
+
+* Customized README
+* Terminal-style aesthetic
+* Architecture
+* Setup instructions
+* Screenshots
+* Live link
+* Project structure
+* Git history
+
+---
+
+## 🟥 6. Documentation — 10/10 target
+
+* Architecture diagram
+* Data flow
+* AI architecture
+* Prompt strategy
+* API strategy
+* Module explanation
+* Limitations
+* Future improvements
+
+---
+
+# 38. What NOT to do
+
+Avoid these mistakes:
+
+### ❌ Don't make it just:
+
+```text
+Upload resume → Gemini → huge paragraph
+```
+
+### ❌ Don't hardcode ATS scores.
+
+### ❌ Don't claim your score is an actual recruiter's ATS score.
+
+Call it:
+
+> **Estimated ATS Compatibility Score**
+
+### ❌ Don't let Gemini invent achievements.
+
+### ❌ Don't expose API keys.
+
+### ❌ Don't create a huge `app.py`.
+
+### ❌ Don't add Django/React just to look sophisticated.
+
+### ❌ Don't add unnecessary database infrastructure.
+
+### ❌ Don't add 20 features that don't work reliably.
+
+---
+
+# 39. Recommended Development Priority
+
+Because of your deadline, follow this order.
+
+### 🔴 Phase 1 — Absolutely required
+
+```text
+Resume upload
+JD input
+PDF parser
+Session state
+Forms
+Gemini integration
+ATS scoring
+Skill matching
+Dashboard
+```
+
+### 🟠 Phase 2
+
+```text
+AI Critic
+Resume Improvement
+Charts
+Data editor
+Expanders
+Error handling
+```
+
+### 🟡 Phase 3
+
+```text
+Interview preparation
+Version comparison
+Tests
+README
+Architecture
+Deployment
+```
+
+### 🟢 Phase 4 — only if everything works
+
+```text
+Voice interview
+Additional polish
+Animations
+Extra analytics
+```
+
+---
+
+# 40. Final Application Flow
+
+The finished product should feel like this:
+
+```text
+                    RESUMEIQ
+                       │
+                       ↓
+             ┌──────────────────┐
+             │ Upload Resume    │
+             └────────┬─────────┘
+                      ↓
+             ┌──────────────────┐
+             │ Add Job          │
+             │ Description      │
+             └────────┬─────────┘
+                      ↓
+                🚀 ANALYZE
+                      ↓
+        ┌─────────────┼──────────────┐
+        ↓             ↓              ↓
+    ATS SCORE     JOB MATCH      SKILL MATCH
+      82/100         84%            88%
+        │             │              │
+        └─────────────┼──────────────┘
+                      ↓
+               SKILL GAP ANALYSIS
+                      ↓
+                🔥 AI CRITIC
+                      ↓
+              ✨ IMPROVEMENTS
+                      ↓
+             🎤 INTERVIEW PREP
+                      ↓
+              📊 FINAL REPORT
+```
+
+---
+
+# 🏆 The final positioning
+
+Don't present this as:
+
+> **"A Streamlit resume analyzer."**
+
+Present it as:
+
+> ### **ResumeIQ — An AI-powered Resume Intelligence and Job Matching Platform**
+>
+> A multimodal AI career assistant that combines deterministic resume analytics, job-specific skill matching, Gemini-powered semantic analysis, ATS compatibility estimation, personalized recommendations, and interview preparation in an interactive Streamlit dashboard.
+
+That positioning is **professional enough for your LinkedIn/resume**, while the implementation directly targets the **MirAI 100-point evaluation**.
+
+### Your target stack
+
+**Python + Streamlit + Gemini + Pandas + PyMuPDF + Plotly + GitHub + Streamlit Cloud**
+
+And most importantly: **build the core reliably first, then add voice/version comparison only after the 100-point rubric is fully covered.**

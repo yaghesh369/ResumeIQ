@@ -1,0 +1,27 @@
+SENIOR PYTHON BACKEND ENGINEER — TechNova Systems
+
+ABOUT THE ROLE
+We are seeking a Senior Python Backend Engineer to design and scale our
+core services. You will own APIs used by millions of users and mentor
+junior engineers.
+
+REQUIRED SKILLS
+- 5+ years of professional software development experience
+- Expert Python and Django or FastAPI
+- Strong REST API design and PostgreSQL
+- Docker and CI/CD pipelines (GitHub Actions or Jenkins)
+- Cloud experience: AWS or GCP
+
+PREFERRED SKILLS
+- Kubernetes, Terraform, Redis
+- GraphQL, Microservices architecture
+- Experience with machine learning pipelines
+
+RESPONSIBILITIES
+- Design, build, and maintain scalable backend services in Python
+- Optimize PostgreSQL queries and data models
+- Improve observability, testing culture, and deployment automation
+- Collaborate with frontend teams on clean API contracts
+
+EDUCATION
+Bachelor degree in Computer Science or related field (or equivalent experience)

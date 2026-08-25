@@ -1,9 +1,9 @@
 <div align="center">
 
-> **Resume intelligence for better applications.**
->
-> Analyze your resume, compare it with a job description, and get clear,
-> actionable feedback before you apply.
+<p>
+    <strong>Turn your resume into a smarter application.</strong><br>
+    Compare your experience with any job description and get clear, actionable feedback before you apply.
+</p>
 
 # 📄 ResumeIQ
 
